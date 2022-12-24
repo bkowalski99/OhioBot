@@ -91,5 +91,9 @@ async def on_message(message):
         await client.close() 
         sys.exit()
 
-def start(): 
-    client.run('MTA1NTg4MjI4MDcwNDQxMzc4Nw.GDw_zv.wfghD7CZKEmr1JhddPMGxOlKj2V2pOJXhA-7h4')
+def start():
+    key = '' 
+    reader = open(r"C:\Users\bkowa\Documents\Python Code\OhioBot\discordBotCode\SecretKey.txt", "r")
+    key = reader.readline()
+
+    client.run(key)
