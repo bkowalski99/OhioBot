@@ -34,6 +34,8 @@ async def on_message(message):
     conn = databaseManagement.create_connection(database)
     with conn:
         user = message.author.name
+        user = user.replace('\'', '')
+        user = user.replace('\"', '')
         databaseManagement.insertOrUpdateUserMessages(conn,user)
         
 

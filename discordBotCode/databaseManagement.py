@@ -56,6 +56,7 @@ def update_message(conn, ping):
 def checkForUserMessages(conn, user):
     cur = conn.cursor()
     sql = "SELECT * FROM messages WHERE id=\'"+user+"\'"
+    #update with Try Catch statement to handle error where user has no messages
     cur.execute(sql)
     rows = cur.fetchall()
     return rows
@@ -101,17 +102,16 @@ def insertOrUpdateUser(conn, user):
     else:
         create_ping(conn,(user, 1))
 
-
-def main():
-    # set database to access
-    database = r"C:\Users\bkowa\Documents\Python Code\OhioBot\discordBotCode\csgamerpings.db"
-    conn = create_connection(database)
-    with conn:
-        user = 'Bearington'
-        insertOrUpdateUser(conn,'Bearington')
-        insertOrUpdateUser(conn,'Map')
+# def main():
+#     # set database to access
+#     database = r"C:\Users\bkowa\Documents\Python Code\OhioBot\discordBotCode\csgamerpings.db"
+#     conn = create_connection(database)
+#     with conn:
+#         user = 'Bearington'
+#         insertOrUpdateUser(conn,'Bearington')
+#         insertOrUpdateUser(conn,'Map')
         
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()

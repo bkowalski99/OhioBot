@@ -6,7 +6,7 @@ __author__   =   "Ben Kowalski"
 import discordBotCode.discordBot as discordBot
 #import GitHub
 
-
+ 
 #main loop
 print("Beginning Discord bot service")
 
