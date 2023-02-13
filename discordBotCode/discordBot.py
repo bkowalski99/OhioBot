@@ -37,6 +37,8 @@ async def error_occurred():
 async def on_ready():
     print(f'We have logged in as {client.user}')
 
+#def time_converter() - should take any line containing ' EST' and respond with PST and CST 
+
 
 @client.event
 async def on_message(message):
