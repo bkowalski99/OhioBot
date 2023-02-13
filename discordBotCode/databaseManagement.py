@@ -72,7 +72,7 @@ def insertOrUpdateUserMessages(conn, user):
 
 def print_pings(conn):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM pings")
+    cur.execute("SELECT * FROM pings  ORDER BY count DESC;")
 
     rows = cur.fetchall()
     for row in rows:
@@ -82,7 +82,7 @@ def print_pings(conn):
 
 def print_pings_messages(conn):
     cur = conn.cursor()
-    cur.execute("SELECT * FROM messages")
+    cur.execute("SELECT * FROM messages ORDER BY count DESC;")
 
     rows = cur.fetchall()
     return rows
@@ -102,14 +102,11 @@ def insertOrUpdateUser(conn, user):
     else:
         create_ping(conn,(user, 1))
 
+
 # def main():
 #     # set database to access
 #     database = r"C:\Users\bkowa\Documents\Python Code\OhioBot\discordBotCode\csgamerpings.db"
 #     conn = create_connection(database)
-#     with conn:
-#         user = 'Bearington'
-#         insertOrUpdateUser(conn,'Bearington')
-#         insertOrUpdateUser(conn,'Map')
         
 
 
