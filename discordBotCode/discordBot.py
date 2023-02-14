@@ -12,21 +12,23 @@ database = r"C:\Users\bkowa\Documents\Python Code\OhioBot\discordBotCode\csgamer
 intents = discord.Intents.default()
 intents.message_content = True
 
-def convert_to_pst(text):
-    # Find all occurrences of a number followed by "est" or "EST"
-    matches = re.findall(r'\b\d+\s*(est|EST)\b', text)
-
-    # Replace each match with the equivalent time in PST
-    for match in matches:
-        hour = int(match[0].split()[0])
-        if hour >= 100:
-            hour = hour // 100
-        hour = (hour + 3) % 24
-        text = text.replace(match[0], str(hour) + "pst")
-
-    return text
-
 client = discord.Client(intents=intents)
+
+def convert_to_pst(text):
+    match = re.search(r'\d+ est', text)
+    number = match.group(0)[0:-4]
+    if len(number) == 4:
+        number = ((9 + int(number[0:2]))%12)*100 + int(number[2:4])
+        value =  int(number) 
+    elif len(number) == 3:
+        number = ((9 + int(number[0:1]))%12)*100 + int(number[1:3])
+        value =  int(number)
+    elif len(number) == 2:
+        number = number[0]
+        value = (9 + int(number))%12 
+    else:
+        value = (9 + int(number))%12  
+    return(value)
 
 # Sends message to alert Discord that there was an error
 async def error_occurred():
@@ -95,17 +97,14 @@ async def on_message(message):
 
     if ' est' in message.content.lower():
         text = message.content.lower()
-        match = re.search(r'\d+ est', text)
-        number = match.group(0)[0:2]
-        if number[1] == ' ':
-            number = number[0]
+        # only checks first character currently
+        if text[0].isnumeric():
+            value = convert_to_pst(text)
+            await message.channel.send("That's " + str(value) + " PST")
 
-        value = (9 + int(number))%12 
-        if int(value) == 0:
-            value = 12
-        await message.channel.send("That's " + str(value) + " PST")
-
-
+    if ' pst' in message.content.lower():
+        
+        await message.channel.send("That's " + message.content.lower())
 
 
     if len(message.role_mentions) > 0:
