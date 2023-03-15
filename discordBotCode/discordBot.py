@@ -14,6 +14,7 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
+# Converts messages with EST to PST
 def convert_to_pst(text):
     text = text.replace(":", "")
     match = re.search(r'\d+ est', text)
@@ -37,7 +38,6 @@ async def error_occurred():
 async def on_ready():
     print(f'We have logged in as {client.user}')
 
-#def time_converter() - should take any line containing ' EST' and respond with PST and CST 
 
 
 @client.event
