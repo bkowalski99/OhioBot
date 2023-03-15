@@ -9,6 +9,7 @@ import re
 
 #consts
 database = r"C:\Users\bkowa\Documents\Python Code\OhioBot\discordBotCode\csgamerpings.db"
+cryingEmoji =  r"C:\Users\bkowa\Documents\Python Code\OhioBot\discordBotCode\crying-emoji-dies.gif"
 intents = discord.Intents.default()
 intents.message_content = True
 
@@ -101,8 +102,7 @@ async def on_message(message):
         
 
     if ' pst' in message.content.lower():
-        gif = r"C:\Users\bkowa\Documents\Python Code\OhioBot\discordBotCode\crying-emoji-dies.gif"
-        with open(gif, 'rb') as f:
+        with open(cryingEmoji, 'rb') as f:
             picture = discord.File(f)
             await message.channel.send(file=picture)
 
