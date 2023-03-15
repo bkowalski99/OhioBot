@@ -101,8 +101,10 @@ async def on_message(message):
         
 
     if ' pst' in message.content.lower():
-        
-        await message.channel.send("That's " + message.content.lower())
+        gif = r"C:\Users\bkowa\Documents\Python Code\OhioBot\discordBotCode\crying-emoji-dies.gif"
+        with open(gif, 'rb') as f:
+            picture = discord.File(f)
+            await message.channel.send(file=picture)
 
     if ' cst' in message.content.lower():
         
