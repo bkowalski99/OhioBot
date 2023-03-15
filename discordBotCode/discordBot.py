@@ -15,19 +15,17 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 def convert_to_pst(text):
+    text = text.replace(":", "")
     match = re.search(r'\d+ est', text)
     number = match.group(0)[0:-4]
     if len(number) == 4:
-        number = ((9 + int(number[0:2]))%12)*100 + int(number[2:4])
-        value =  int(number) 
+        value = str(((9 + int(number[0:2]))%12))+":" + (number[2:4]) 
     elif len(number) == 3:
-        number = ((9 + int(number[0:1]))%12)*100 + int(number[1:3])
-        value =  int(number)
+        value = str(((9 + int(number[0:1]))%12))+":" + (number[1:3])
     elif len(number) == 2:
-        number = number[0]
-        value = (9 + int(number))%12 
+        value = str((9 + int(number))%12)+ ":00"
     else:
-        value = (9 + int(number))%12  
+        value = str((9 + int(number)))+ ":00" 
     return(value)
 
 # Sends message to alert Discord that there was an error
@@ -97,15 +95,18 @@ async def on_message(message):
 
     if ' est' in message.content.lower():
         text = message.content.lower()
-        # only checks first character currently
-        if text[0].isnumeric():
-            value = convert_to_pst(text)
-            await message.channel.send("That's " + str(value) + " PST")
+        # does not check if " est" occurs with non-numeric entries and will try to convert them
+        value = convert_to_pst(text)
+        await message.channel.send("That's " + str(value) + " PST")
+        
 
     if ' pst' in message.content.lower():
         
         await message.channel.send("That's " + message.content.lower())
 
+    if ' cst' in message.content.lower():
+        
+        await message.channel.send("Shuddup")
 
     if len(message.role_mentions) > 0:
         for role in message.role_mentions:
@@ -115,7 +116,7 @@ async def on_message(message):
                 with conn:
                     user = message.author.name
                     databaseManagement.insertOrUpdateUser(conn,user)
-                return
+                
     
     if '$help' in text:
         await message.channel.send('''**$count** will tell you how many times we've pinged csgamer\n **$messages** will tell you how many messages everyone has sent
