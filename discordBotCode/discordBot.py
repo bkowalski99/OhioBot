@@ -1,5 +1,6 @@
 #imports
 import discord
+from discord.ext import commands
 import discordBotCode.databaseManagement as databaseManagement
 import sqlite3
 from sqlite3 import Error
@@ -12,6 +13,8 @@ database = r"C:\Users\bkowa\Documents\Python Code\OhioBot\discordBotCode\csgamer
 cryingEmoji =  r"C:\Users\bkowa\Documents\Python Code\OhioBot\discordBotCode\crying-emoji-dies.gif"
 intents = discord.Intents.default()
 intents.message_content = True
+
+bot = commands.Bot(command_prefix='$', intents=intents)
 
 client = discord.Client(intents=intents)
 
@@ -30,9 +33,35 @@ def convert_to_pst(text):
         value = str((9 + int(number)))+ ":00" 
     return(value)
 
+def get_messages_count():
+        conn = databaseManagement.create_connection(database)
+        
+        with conn:
+            table = databaseManagement.print_pings_messages(conn)
+            count = ''
+            for row in table:
+                count = count + str(row[0]) + ' has sent '+ str(row[1]) + ' messages' + '\n'
+        return count
+
+def get_pings_count():
+        conn = databaseManagement.create_connection(database)
+        with conn:
+            table = databaseManagement.print_pings(conn)
+            count = ''
+            for row in table:
+                count = count + str(row[0]) + ' has pinged @CSGamer '+ str(row[1]) + ' times\n'
+        return count
+
 # Sends message to alert Discord that there was an error
 async def error_occurred():
     await discord.message.channel.send("Something went horribly wrong")
+
+# commands require new invite to server to allow for commands to be listed as a part of the bot
+@bot.command()
+async def howManySends(ctx, content: get_pings_count):
+    count = get_pings_count()
+    await ctx.send(count)
+
 
 
 @client.event
@@ -62,7 +91,7 @@ async def on_message(message):
     if 'ohio' in text:
         await message.channel.send('I love Ohio! 🎉')
     
-    elif 'california' in text:
+    if 'california' in text:
         await message.channel.send('Fuck California. 😠')
 
     if '$$updateCode' in text:
@@ -75,23 +104,13 @@ async def on_message(message):
 
     if '$count' in text:        
 
-        conn = databaseManagement.create_connection(database)
-        with conn:
-            table = databaseManagement.print_pings(conn)
-            count = ''
-            for row in table:
-                count = count + str(row[0]) + ' has pinged @CSGamer '+ str(row[1]) + ' times\n'
+            count = get_pings_count()
             await message.channel.send(count)
 
 
     if '$messages' in message.content.lower():        
 
-        conn = databaseManagement.create_connection(database)
-        with conn:
-            table = databaseManagement.print_pings_messages(conn)
-            count = ''
-            for row in table:
-                count = count + str(row[0]) + ' has sent '+ str(row[1]) + ' messages' + '\n'
+            count = get_messages_count()
             await message.channel.send(count)
 
     if ' est' in message.content.lower():
@@ -127,6 +146,8 @@ async def on_message(message):
     if '$$close' in text:
         await client.close() 
         sys.exit()
+
+
 
 def start():
     key = '' 
