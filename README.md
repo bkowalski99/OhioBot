@@ -8,7 +8,7 @@ Functionality:
 
 Featuring:
 * SQLite3 to manage a database
-* Discord API to connect to a DB
+* Discord API to connect to a specified server
 * Unsecure SQL code that is probably liable to injection
 
 Next Steps:
