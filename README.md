@@ -12,6 +12,5 @@ Featuring:
 * Unsecure SQL code that is probably liable to injection
 
 Next Steps:
-* Introducing shell method to allow for the bot to be stopped, updated, and started
-* More robust security to patch the injection concerns
-* More secrets
+* Host this file on AWS
+* Integrate new method to store details using MongoDB instead of SQLite3
